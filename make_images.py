@@ -1,43 +1,70 @@
-import os
+#import PathCreator
+#import DataLoading
+#import PlotSettings
+#import OperatorSettings
+#import WindowSettings
+#import Saving
 
-if not os.path.exists("./Data"):
-	os.makedirs("./Data")
+#PathCreator.PathCreator()
+#DataLoading.DataLoading()
+#PlotSettings.PlotSettings()
+#OperatorSettings.OperatorSettings()
+#WindowSettings.WindowSettings()
+#Saving.Saving()
 
-if not os.path.exists("./Images"):
-	os.makedirs("./Images")
 
-if not os.path.exists("./Sessions/Python"):
-	os.makedirs("./Sessions/Python")
+def PathCreator():
+	import os
 
-if not os.path.exists("./Sessions/XML"):
-	os.makedirs("./Sessions/XML")
+	if not os.path.exists("./Data"):
+		os.makedirs("./Data")
 
-OpenDatabase("./Data/meshtal.vtk")
-AddPlot("Pseudocolor", "TALLY_TAG")
+	if not os.path.exists("./Images"):
+		os.makedirs("./Images")
 
-OpenDatabase("./Data/fng_zip.stl")
-AddPlot("Mesh", "STL_mesh")
+	if not os.path.exists("./Sessions/Python"):
+		os.makedirs("./Sessions/Python")
 
-m = MeshAttributes()
-m.showInternal = 1
-m.opacity = 10
-SetPlotOptions(m)
+	if not os.path.exists("./Sessions/XML"):
+		os.makedirs("./Sessions/XML")
 
-AddOperator("Slice", 1)
-s = SliceAttributes()
-SetOperatorOptions(s)
+def DataLoading():
+	visit.OpenDatabase("./Data/meshtal.vtk")
+	visit.AddPlot("Pseudocolor", "TALLY_TAG")
 
-SaveSession("./Sessions/XML/example.session")
-WriteScript(open("./Sessions/Python/example.py", "wt"))
+	visit.OpenDatabase("./Data/fng_zip.stl")
+	visit.AddPlot("Mesh", "STL_mesh")
 
-DrawPlots()
+def PlotSettings():
+	m = MeshAttributes()
+	m.showInternal = 1
+	m.opacity = 10
+	SetPlotOptions(m)
+	
+def OperatorSettings():
+	AddOperator("Slice", 1)
+	s = SliceAttributes()
+	SetOperatorOptions(s)
+	
+def WindowSettings():
+	WindowAttributes = SaveWindowAttributes()
+	WindowAttributes.format = WindowAttributes.BMP
+	WindowAttributes.fileName = "./Images/example"
+	WindowAttributes.width, WindowAttributes.height = 1024, 768
+	WindowAttributes.screenCapture = 0
+	SetSaveWindowAttributes(WindowAttributes)
 
-WindowAttributes = SaveWindowAttributes()
-WindowAttributes.format = WindowAttributes.BMP
-WindowAttributes.fileName = "./Images/example"
-WindowAttributes.width, WindowAttributes.height = 1024, 768
-WindowAttributes.screenCapture = 0
-SetSaveWindowAttributes(WindowAttributes)
-SaveWindow()
+def Saving():
+	DrawPlots()
+	SaveSession("./Sessions/XML/example.session")
+	WriteScript(open("./Sessions/Python/example.py", "wt"))
+	SaveWindow()
+	exit()
 
-exit()
+
+PathCreator()
+DataLoading()
+PlotSettings()
+OperatorSettings()
+WindowSettings()
+Saving()
