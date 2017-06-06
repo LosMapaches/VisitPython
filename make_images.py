@@ -1,3 +1,11 @@
+import os
+
+if not os.path.exists("./Images"):
+	os.makedirs("./Images")
+
+if not os.path.exists("./Sessions"):
+	os.makedirs("./Sessions")
+
 OpenDatabase("./Data/meshtal.vtk")
 AddPlot("Pseudocolor", "TALLY_TAG")
 
@@ -19,7 +27,7 @@ DrawPlots()
 
 WindowAttributes = SaveWindowAttributes()
 WindowAttributes.format = WindowAttributes.BMP
-WindowAttributes.fileName = "Images/example"
+WindowAttributes.fileName = "./Images/example"
 WindowAttributes.width, WindowAttributes.height = 1024, 768
 WindowAttributes.screenCapture = 0
 SetSaveWindowAttributes(WindowAttributes)
