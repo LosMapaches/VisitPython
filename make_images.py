@@ -1,7 +1,7 @@
-OpenDatabase("~/Desktop/meshtal.vtk")
+OpenDatabase("./Data/meshtal.vtk")
 AddPlot("Pseudocolor", "TALLY_TAG")
 
-OpenDatabase("~/Desktop/fng_zip.stl")
+OpenDatabase("./Data/fng_zip.stl")
 AddPlot("Mesh", "STL_mesh")
 
 m = MeshAttributes()
@@ -13,13 +13,13 @@ AddOperator("Slice", 1)
 s = SliceAttributes()
 SetOperatorOptions(s)
 
-SaveSession("~/Desktop/example.session")
+SaveSession("./Sessions/example.session")
 
 DrawPlots()
 
 WindowAttributes = SaveWindowAttributes()
 WindowAttributes.format = WindowAttributes.BMP
-WindowAttributes.fileName = "example"
+WindowAttributes.fileName = "Images/example"
 WindowAttributes.width, WindowAttributes.height = 1024, 768
 WindowAttributes.screenCapture = 0
 SetSaveWindowAttributes(WindowAttributes)
