@@ -1,10 +1,16 @@
 import os
 
+if not os.path.exists("./Data"):
+	os.makedirs("./Data")
+
 if not os.path.exists("./Images"):
 	os.makedirs("./Images")
 
-if not os.path.exists("./Sessions"):
-	os.makedirs("./Sessions")
+if not os.path.exists("./Sessions/Python"):
+	os.makedirs("./Sessions/Python")
+
+if not os.path.exists("./Sessions/XML"):
+	os.makedirs("./Sessions/XML")
 
 OpenDatabase("./Data/meshtal.vtk")
 AddPlot("Pseudocolor", "TALLY_TAG")
@@ -21,7 +27,8 @@ AddOperator("Slice", 1)
 s = SliceAttributes()
 SetOperatorOptions(s)
 
-SaveSession("./Sessions/example.session")
+SaveSession("./Sessions/XML/example.session")
+WriteScript(open("./Sessions/Python/example.py", "wt"))
 
 DrawPlots()
 
