@@ -1,19 +1,14 @@
-#import PathCreator
-#import DataLoading
-#import PlotSettings
-#import OperatorSettings
-#import WindowSettings
-#import Saving
-
-#PathCreator.PathCreator()
-#DataLoading.DataLoading()
-#PlotSettings.PlotSettings()
-#OperatorSettings.OperatorSettings()
-#WindowSettings.WindowSettings()
-#Saving.Saving()
-
-
 def PathCreator():
+	"""Form folders to contain Data, Sessions, and Images.
+
+
+	Folders created:
+	./Data -- data used for visualization
+	./Images -- windows images saved
+	./Sessions/Python -- python session files
+	./Sessions/XML -- XML session files
+	"""
+
 	import os
 
 	if not os.path.exists("./Data"):
@@ -28,25 +23,41 @@ def PathCreator():
 	if not os.path.exists("./Sessions/XML"):
 		os.makedirs("./Sessions/XML")
 
+
 def DataLoading():
+	"""Load data to VisIt and add plot.
+
+
+	Data used:
+	*.vtk -- results
+	*.stl -- geometry
+	"""
+
 	visit.OpenDatabase("./Data/meshtal.vtk")
 	visit.AddPlot("Pseudocolor", "TALLY_TAG")
 
 	visit.OpenDatabase("./Data/fng_zip.stl")
 	visit.AddPlot("Mesh", "STL_mesh")
 
+
 def PlotSettings():
-	m = MeshAttributes()
-	m.showInternal = 1
-	m.opacity = 10
-	SetPlotOptions(m)
-	
+	"""Visual settings for plots."""
+
+	MeshAttributes().showInternal = 1
+	MeshAttributes().opacity = 10
+	SetPlotOptions(MeshAttributes())
+
+
 def OperatorSettings():
+	"""Add operator and it's settings."""
+
 	AddOperator("Slice", 1)
-	s = SliceAttributes()
-	SetOperatorOptions(s)
-	
+	SetOperatorOptions(SliceAttributes())
+
+
 def WindowSettings():
+	"""Modify window settings."""
+
 	WindowAttributes = SaveWindowAttributes()
 	WindowAttributes.format = WindowAttributes.BMP
 	WindowAttributes.fileName = "./Images/example"
@@ -54,7 +65,10 @@ def WindowSettings():
 	WindowAttributes.screenCapture = 0
 	SetSaveWindowAttributes(WindowAttributes)
 
+
 def Saving():
+	"""Displays plots on windows and saves sessions and images."""
+
 	DrawPlots()
 	SaveSession("./Sessions/XML/example.session")
 	WriteScript(open("./Sessions/Python/example.py", "wt"))
