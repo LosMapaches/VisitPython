@@ -1,3 +1,8 @@
+Files={"meshtal.vtk" : ["Pseudocolor"]+["TALLY_TAG"],
+	"fng_zip.stl" : ["Mesh"]+["STL_mesh"],
+	}
+
+
 def PathCreator():
 	"""Form folders to contain Data, Sessions, and Images.
 
@@ -11,9 +16,6 @@ def PathCreator():
 
 	import os
 
-	if not os.path.exists("./Data"):
-		os.makedirs("./Data")
-
 	if not os.path.exists("./Images"):
 		os.makedirs("./Images")
 
@@ -24,7 +26,7 @@ def PathCreator():
 		os.makedirs("./Sessions/XML")
 
 
-def DataLoading():
+def DataLoading(File):
 	"""Load data to VisIt and add plot.
 
 
@@ -32,26 +34,45 @@ def DataLoading():
 	*.vtk -- results
 	*.stl -- geometry
 	"""
-
-	visit.OpenDatabase("./Data/meshtal.vtk")
-	visit.AddPlot("Pseudocolor", "TALLY_TAG")
-
-	visit.OpenDatabase("./Data/fng_zip.stl")
-	visit.AddPlot("Mesh", "STL_mesh")
+	for key in File:
+		OpenDatabase("./Data/"+key)
+		AddPlot(File[key][0], File[key][1])
 
 
 def PlotSettings():
 	"""Visual settings for plots."""
 
-	MeshAttributes().showInternal = 1
-	MeshAttributes().opacity = 10
+	# Mesh plot attributes.
+	MeshAttributes().legendFlag = 1
+	#MeshAttributes().lineStyle = "SOLID"
+	MeshAttributes().lineWidth = 0
+	MeshAttributes().meshColor = (0, 0, 0, 255)
+	#MeshAttributes().meshColorSource = "Foreground"
+	#MeshAttributes().opaqueColorSource = "Background"
+	#MeshAttributes().opaqueMode = "Auto"
+	MeshAttributes().pointSize = 0.05
+	#MeshAttributes().opaqueColorSourcesmoothingLevel = (255, 255, 255, 255)
+	MeshAttributes().pointSizeVarEnabled = 0
+	MeshAttributes().pointSizeVar = "default"
+	#MeshAttributes().pointType = "Point"
+	MeshAttributes().showInternal = 0
+	MeshAttributes().pointSizePixels = 2
+	MeshAttributes().opacity = 1
+
 	SetPlotOptions(MeshAttributes())
+
+	# Pseudocolor plot attributes.
+	#PseudocolorAttributes().scaling = "Linear"
+	PseudocolorAttributes().lineType = PseudocolorAttributes().Tube
+
+	SetPlotOptions(PseudocolorAttributes())
 
 
 def OperatorSettings():
 	"""Add operator and it's settings."""
 
 	AddOperator("Slice", 1)
+
 	SetOperatorOptions(SliceAttributes())
 
 
@@ -61,8 +82,9 @@ def WindowSettings():
 	WindowAttributes = SaveWindowAttributes()
 	WindowAttributes.format = WindowAttributes.BMP
 	WindowAttributes.fileName = "./Images/example"
-	WindowAttributes.width, WindowAttributes.height = 1024, 768
+	WindowAttributes.width, WindowAttributes.height = 2000, 2000
 	WindowAttributes.screenCapture = 0
+
 	SetSaveWindowAttributes(WindowAttributes)
 
 
@@ -77,7 +99,9 @@ def Saving():
 
 
 PathCreator()
-DataLoading()
+
+DataLoading(Files)
+
 PlotSettings()
 OperatorSettings()
 WindowSettings()
