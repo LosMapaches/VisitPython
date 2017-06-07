@@ -34,6 +34,7 @@ def DataLoading(File):
 	*.vtk -- results
 	*.stl -- geometry
 	"""
+
 	for key in File:
 		OpenDatabase("./Data/"+key)
 		AddPlot(File[key][0], File[key][1])
@@ -43,29 +44,76 @@ def PlotSettings():
 	"""Visual settings for plots."""
 
 	# Mesh plot attributes.
-	MeshAttributes().legendFlag = 1
-	#MeshAttributes().lineStyle = "SOLID"
-	MeshAttributes().lineWidth = 0
-	MeshAttributes().meshColor = (0, 0, 0, 255)
-	#MeshAttributes().meshColorSource = "Foreground"
-	#MeshAttributes().opaqueColorSource = "Background"
-	#MeshAttributes().opaqueMode = "Auto"
-	MeshAttributes().pointSize = 0.05
-	#MeshAttributes().opaqueColorSourcesmoothingLevel = (255, 255, 255, 255)
-	MeshAttributes().pointSizeVarEnabled = 0
-	MeshAttributes().pointSizeVar = "default"
-	#MeshAttributes().pointType = "Point"
-	MeshAttributes().showInternal = 0
-	MeshAttributes().pointSizePixels = 2
-	MeshAttributes().opacity = 1
+	Attribute=MeshAttributes()
 
-	SetPlotOptions(MeshAttributes())
+	Attribute.legendFlag = 1
+	Attribute.lineStyle = Attribute.DASH  # SOLID DASH DOT DOTDASH
+	Attribute.lineWidth = 0
+	Attribute.meshColor = (0, 0, 0, 255)
+	Attribute.meshColorSource = Attribute.Foreground  # Foreground MeshCustom
+	Attribute.opaqueColorSource = Attribute.Background  # Background OpaqueCustom
+	Attribute.opaqueMode = Attribute.Auto  # Auto On Off
+	Attribute.pointSize = 0.05
+	Attribute.opaqueColor = (255, 255, 255, 255)
+	Attribute.smoothingLevel = Attribute.None  # None Fast High
+	Attribute.pointSizeVarEnabled = 0
+	Attribute.pointSizeVar = "default"
+	Attribute.pointType = Attribute.Point  # Point Box Axis Icosahedron Octahedron Tetrahedron SphereGeometry Point Sphere
+	Attribute.showInternal = 0
+	Attribute.pointSizePixels = 2
+	Attribute.opacity = 1
+
+	SetPlotOptions(Attribute)
 
 	# Pseudocolor plot attributes.
-	#PseudocolorAttributes().scaling = "Linear"
-	PseudocolorAttributes().lineType = PseudocolorAttributes().Tube
+	Attribute = PseudocolorAttributes()
 
-	SetPlotOptions(PseudocolorAttributes())
+	Attribute.scaling = Attribute.Linear  # Linear Log Skew
+	Attribute.skewFactor = 1
+	Attribute.limitsMode = Attribute.OriginalData  # OriginalData CurrentPlot
+	Attribute.minFlag = 0
+	Attribute.min = 0
+	Attribute.maxFlag = 0
+	Attribute.max = 1
+	Attribute.centering = Attribute.Natural # Natural Nodal Zonal
+	Attribute.colorTableName = "hot"  # See options in VisIt
+	Attribute.invertColorTable = 0
+	Attribute.opacityType = Attribute.FullyOpaque  # FullyOpaque ColorTable Constant Ramp VariableRange
+	Attribute.opacityVariable = ""
+	Attribute.opacity = 1
+	Attribute.opacityVarMin = 0
+	Attribute.opacityVarMax = 1
+	Attribute.opacityVarMinFlag = 0
+	Attribute.opacityVarMaxFlag = 0
+	Attribute.pointSize = 0.05
+	Attribute.pointType = Attribute.Point  # Point Box Axis Icosahedron Octahedron Tetrahedron SphereGeometry Point Sphere
+	Attribute.pointSizeVarEnabled = 0
+	Attribute.pointSizeVar = "default"
+	Attribute.pointSizePixels = 2
+	Attribute.lineType = Attribute.Tube  # Line Tube Ribbon
+	Attribute.lineStyle = Attribute.SOLID  # SOLID DASH DOT DOTDASH
+	Attribute.lineWidth = 0
+	#Attribute.tubeDisplayDensity = 10
+	Attribute.tubeRadiusSizeType = Attribute.FractionOfBBox  # FractionOfBBox Absolute
+	Attribute.tubeRadiusAbsolute = 0.125
+	Attribute.tubeRadiusBBox = 0.005
+	#Attribute.varyTubeRadius = 0
+	#Attribute.varyTubeRadiusVarible = ""
+	#Attribute.varyTubeRadiusFactor = 10
+	#Attribute.endPointType = Attribute.None  # None Tails Heads Both
+	#Attribute.endPointStyle = Attribute.Spheres  # Spheres Cones
+	Attribute.endPointRadiusSizeType = Attribute.FractionOfBBox # FractionOfBBox Absolute
+	Attribute.endPointRadiusAbsolute = 1
+	Attribute.endPointRadiusBBox = 0.005
+	Attribute.endPointRatio = 2
+	Attribute.renderSurfaces = 1
+	Attribute.renderWireframe = 0
+	Attribute.renderPoints = 0
+	Attribute.smoothingLevel = 0
+	Attribute.legendFlag = 1
+	Attribute.lightingFlag = 1
+
+	SetPlotOptions(Attribute)
 
 
 def OperatorSettings():
@@ -73,19 +121,21 @@ def OperatorSettings():
 
 	AddOperator("Slice", 1)
 
-	SetOperatorOptions(SliceAttributes())
+	Attribute = SliceAttributes()
+	SetOperatorOptions(Attribute)
 
 
 def WindowSettings():
 	"""Modify window settings."""
 
-	WindowAttributes = SaveWindowAttributes()
-	WindowAttributes.format = WindowAttributes.BMP
-	WindowAttributes.fileName = "./Images/example"
-	WindowAttributes.width, WindowAttributes.height = 2000, 2000
-	WindowAttributes.screenCapture = 0
+	Attribute = SaveWindowAttributes()
+	Attribute.format = Attribute.BMP
+	Attribute.fileName = "./Images/example"
+	Attribute.width = 2000
+	Attribute.height = 2000
+	Attribute.screenCapture = 0
 
-	SetSaveWindowAttributes(WindowAttributes)
+	SetSaveWindowAttributes(Attribute)
 
 
 def Saving():
